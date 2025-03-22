@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+{{title}}
+{% endblock title %}
+
+{% block main %}
+<div class="container d-flex justify-content-center mt-5">
+    <form method="post" enctype="multipart/form-data" class="d-flex flex-column col-4">
+        {% csrf_token %}
+        {{form.as_p}}
+        <button class="btn btn-primary" type="submit">send</button>
+    </form>
+</div>
+{% endblock main %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Uzbekistan news
+{% endblock title %}
+
+{% block main %}
+<div class="container d-flex flex-column align-items-start flex-wrap justify-content-between gap-5 mt-5"
+     xmlns="http://www.w3.org/1999/html">
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <a href="{% url 'home' %}" class="btn btn-primary">Back</a>
+        <a href="{% url 'edit' article.pk %}" class="btn btn-primary">Edit</a>
+        <a href="{% url 'delete' article.pk %}" class="btn btn-primary">Delete</a>
+    </div>
+    <div class="card mb-3 w-100">
+        <img src="{{article.get_photo}}" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title">{{article.title}}</h5>
+            <p class="card-text">{{article.info}}</p>
+            <p class="card-text"><small class="text-body-secondary">{{article.created_at}}</small></p>
+        </div>
+    </div>
+    {% if request.user.is_authenticated%}
+<div class="w-100">
+    <h3>Add Comment</h3>
+    <form action="{% url 'comment' article.pk %}" enctype="multipart/form-data" method="post">
+          {% csrf_token %}
+          {{comment_form.as_p}}
+          <button class="btn btn-primary" type="submit">Send</button>
+    </form>
+</div>
+    {% endif %}
+    {% for comment in comments %}
+    <div class="card w-100">
+  <div class="card-header">
+    {{comment.user.name}}
+  </div>
+  <div class="card-body">
+      {{ comment.user.title}}
+    <blockquote class="blockquote mb-0">
+      <p>{{comment.title}}</p>
+      <footer class="blockquote-footer"><cite title="Source Title">{{comment.created_at}}</cite></footer>
+    </blockquote>
+  </div>
+</div>
+    {% endfor %}
+</div>
+{% endblock main %}
